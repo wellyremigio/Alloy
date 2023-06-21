@@ -10,23 +10,15 @@ sig Node {
 
 }
 
-
-
 /*
 
 O grafo é não-direcionado, assim todas as arestas são simétricas
 
 */
 //OK
-pred undirected[n:Node] {
-    //no n1, n2: Node |   (n1 in n2.adj) => not (n2 in n1.adj)
-    all a,b: Node | a in b.adj and b in a.adj
+pred undirected[a,b: Node] {
+    a in b.adj and b in a.adj
 }
-run undirected for 5
-
-
-
-
 
 /*
 
@@ -35,12 +27,9 @@ O grafo é orientado, assim nenhuma aresta é simétrica
 */
 
 //OK
-pred oriented[n: Node] {
-    all a,b: Node | a in b.adj => b not in a.adj
-   //all n1, n2: n | (n1 not in n2.adj) => (n2 not in n1.adj)
+pred oriented[a,b: Node] {
+    a in b.adj => b not in a.adj
 }
-run oriented for 5
-
 
 /*
 
@@ -51,21 +40,16 @@ O grafo não contém ciclos
 pred acyclic[n:Node] {
     all n: Node |n not in n.^adj  
 }
-//run acyclic for 5
-
-
 
 /*
 
 O grafo é completo, com todos os nós conectados a todos os outros
 
 */
-
-pred complete[n:Node] {
-   
+//OK
+pred complete[a, b:Node] {
+    a != b implies a in b.adj and noLoops[a] and noLoops[b]
 }
-
-
 
 /*
 
@@ -74,20 +58,16 @@ Nenhum nó possui aresta para ele mesmo
 */
 //OK
 pred noLoops[n: Node] {
-    n not in n.^adj
+    n not in n.adj
 }
-
 
 /*
 
 O grafo é fortemente conectado, a partir de qualquer nó pode se chegar a qualquer outro*/
-
-pred stronglyConnected[n: Node] {
-    n in n.^adj and undirected[n]
+//OK
+pred stronglyConnected[a,b: Node] {
+    a != b implies (a in b.^adj or b in a.^adj) and undirected[a,b]
 }
-
-
-
 
 /*
 
@@ -95,28 +75,22 @@ O grafo é transitivo, se dois nós são conectados através de um terceiro, os 
 
 */
 
-pred transitive[n: Node] {
-    all a,b,c: Node | a in b.adj and b in c.adj and a in c.adj and not acyclic[n]
+pred transitive[a,b,c: Node] {
+    (a in b.adj and b in c.adj) implies a in c.adj
 }
-run transitive for 5
-
-//A -> B in r and B - > C in r implies A -> C in r
-
-
 
 /* crie fatos combinando alguns dos predicados */
 
 fact {
-    
-    
-    all n: Node | transitive[n]
-
-
+   
     //Done
-    // all n: Node | oriented[n]
-    //all n: Node | undirected[n]
+    //all a,b: Node | undirected[a,b]
+    //all a,b: Node | oriented[a,b]
     //all n: Node | acyclic[n]
+    //all a,b: Node | complete[a,b] 
     //all n: Node | noLoops[n]
+    //all a,b: Node | stronglyConnected[a,b]
+     //all a,b,c: Node | transitive[a,b,c]
 
 }
 
