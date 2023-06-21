@@ -17,7 +17,7 @@ O grafo é não-direcionado, assim todas as arestas são simétricas
 */
 //OK
 pred undirected[a,b: Node] {
-    a in b.adj and b in a.adj
+     all a,b: Node |a in b.adj and b in a.adj
 }
 
 /*
@@ -28,7 +28,7 @@ O grafo é orientado, assim nenhuma aresta é simétrica
 
 //OK
 pred oriented[a,b: Node] {
-    a in b.adj => b not in a.adj
+     all a,b: Node |a in b.adj => b not in a.adj
 }
 
 /*
@@ -48,7 +48,7 @@ O grafo é completo, com todos os nós conectados a todos os outros
 */
 //OK
 pred complete[a, b:Node] {
-    a != b implies a in b.adj and noLoops[a] and noLoops[b]
+     all a,b: Node |a != b implies a in b.adj and a not in a.adj and b not in b.adj
 }
 
 /*
@@ -58,7 +58,7 @@ Nenhum nó possui aresta para ele mesmo
 */
 //OK
 pred noLoops[n: Node] {
-    n not in n.adj
+    all n: Node | n not in n.adj
 }
 
 /*
@@ -66,7 +66,7 @@ pred noLoops[n: Node] {
 O grafo é fortemente conectado, a partir de qualquer nó pode se chegar a qualquer outro*/
 //OK
 pred stronglyConnected[a,b: Node] {
-    a != b implies (a in b.^adj or b in a.^adj) and undirected[a,b]
+    all a,b: Node |a != b implies (a in b.^adj or b in a.^adj) and undirected[a,b]
 }
 
 /*
@@ -76,22 +76,18 @@ O grafo é transitivo, se dois nós são conectados através de um terceiro, os 
 */
 
 pred transitive[a,b,c: Node] {
-    (a in b.adj and b in c.adj) implies a in c.adj
+    all a,b,c: Node | (a in b.adj and b in c.adj) implies a in c.adj
 }
 
 /* crie fatos combinando alguns dos predicados */
 
 fact {
-   
-    //Done
-    //all a,b: Node | undirected[a,b]
-    //all a,b: Node | oriented[a,b]
-    //all n: Node | acyclic[n]
-    //all a,b: Node | complete[a,b] 
-    //all n: Node | noLoops[n]
-    //all a,b: Node | stronglyConnected[a,b]
-     //all a,b,c: Node | transitive[a,b,c]
+    //Grafo ciclo
+    all a,b: Node | oriented[a,b]
+    all a: Node | !acyclic[a]
 
+    //Grafo caminho
+    //all n: Node | !acyclic[n]
 }
 
 /* para rodar o fato */
