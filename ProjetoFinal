@@ -83,11 +83,22 @@ pred transitive[a,b,c: Node] {
 
 fact {
     //Grafo ciclo
-    all a,b: Node | oriented[a,b]
-    all a: Node | !acyclic[a]
+    //all a,b: Node | oriented[a,b]
+    //all n: Node | !acyclic[n]
+    //all n: Node | noLoops[n]
 
     //Grafo caminho
-    //all n: Node | !acyclic[n]
+    //all n: Node | acyclic[n]
+    //all a,b: Node | oriented[a,b]
+    //all a,b,c: Node | !transitive[a,b,c]
+
+    //Grafo conectado
+    //all a,b: Node | undirected[a,b]
+    //all a,b,c: Node | transitive[a,b,c]
+
+    //Grafo direcionado estrito
+    //all a,b: Node | oriented[a,b]
+    //all n: Node | noLoops[n]
 }
 
 /* para rodar o fato */
