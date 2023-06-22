@@ -17,7 +17,7 @@ O grafo é não-direcionado, assim todas as arestas são simétricas
 */
 //OK
 pred undirected[a,b: Node] {
-     all a,b: Node |a in b.adj and b in a.adj
+    all a,b: Node |a in b.adj and b in a.adj
 }
 
 /*
@@ -28,7 +28,7 @@ O grafo é orientado, assim nenhuma aresta é simétrica
 
 //OK
 pred oriented[a,b: Node] {
-     all a,b: Node |a in b.adj => b not in a.adj
+    all a,b: Node |a in b.adj => b not in a.adj
 }
 
 /*
@@ -46,9 +46,9 @@ pred acyclic[n:Node] {
 O grafo é completo, com todos os nós conectados a todos os outros
 
 */
-//OK
+//Ok
 pred complete[a, b:Node] {
-     all a,b: Node |a != b implies a in b.adj and a not in a.adj and b not in b.adj
+    all a,b: Node |a != b implies a in b.adj and a not in a.adj and b not in b.adj
 }
 
 /*
@@ -64,6 +64,7 @@ pred noLoops[n: Node] {
 /*
 
 O grafo é fortemente conectado, a partir de qualquer nó pode se chegar a qualquer outro*/
+
 //OK
 pred stronglyConnected[a,b: Node] {
     all a,b: Node |a != b implies (a in b.^adj or b in a.^adj) and undirected[a,b]
@@ -75,11 +76,14 @@ O grafo é transitivo, se dois nós são conectados através de um terceiro, os 
 
 */
 
+//OK
 pred transitive[a,b,c: Node] {
     all a,b,c: Node | (a in b.adj and b in c.adj) implies a in c.adj
 }
 
 /* crie fatos combinando alguns dos predicados */
+
+//Fiz 4 fatos, eles estão comentados pois são testados um de cada vez.
 
 fact {
     //Grafo ciclo
